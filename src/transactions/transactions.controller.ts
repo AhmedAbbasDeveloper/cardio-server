@@ -32,4 +32,18 @@ export class TransactionsController {
   ): Promise<TransactionDocument> {
     return this.transactionsService.create(createTransactionDto, req.user.id);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('demo')
+  async demo(@Request() req): Promise<TransactionDocument> {
+    return this.transactionsService.create(
+      {
+        date: new Date(),
+        amount: 100,
+        merchant: 'Costco',
+        category: 'Grocieries',
+      },
+      req.user.id,
+    );
+  }
 }
