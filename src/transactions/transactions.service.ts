@@ -26,6 +26,11 @@ export class TransactionsService {
     user: string,
   ) {
     const account = await this.accountService.findOneByUser(user);
+    if (account.balance + amount > account.creditLimit) {
+      throw new Error('Insufficient funds');
+    }
+
+    await this.accountService.updateBalance(account.id, amount);
     return this.transactionModel.create({
       date: new Date(date),
       amount,

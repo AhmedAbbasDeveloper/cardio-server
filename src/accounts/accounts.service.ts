@@ -22,8 +22,19 @@ export class AccountsService {
   ): Promise<AccountDocument> {
     return this.accountModel.create({
       creditLimit,
-      balance: creditLimit,
+      balance: 0,
       user,
     });
+  }
+
+  async updateBalance(
+    accountId: string,
+    amount: number,
+  ): Promise<AccountDocument> {
+    return this.accountModel.findByIdAndUpdate(
+      accountId,
+      { $inc: { balance: amount } },
+      { new: true },
+    );
   }
 }
